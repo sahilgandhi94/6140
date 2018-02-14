@@ -1,0 +1,1671 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Programming Assignment 1}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        \PY{k+kn}{import} \PY{n+nn}{math}
+        \PY{k+kn}{from} \PY{n+nn}{numpy}\PY{n+nn}{.}\PY{n+nn}{linalg} \PY{k}{import} \PY{n}{pinv}
+        \PY{k+kn}{from} \PY{n+nn}{copy} \PY{k}{import} \PY{n}{copy}\PY{p}{,} \PY{n}{deepcopy}
+        \PY{k+kn}{import} \PY{n+nn}{pylab} \PY{k}{as} \PY{n+nn}{pl}
+        \PY{k+kn}{import} \PY{n+nn}{traceback}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+        \PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{optimize} \PY{k}{import} \PY{n}{fmin\PYZus{}bfgs}\PY{p}{,} \PY{n}{minimize}
+        \PY{k+kn}{import} \PY{n+nn}{warnings}
+        \PY{n}{warnings}\PY{o}{.}\PY{n}{filterwarnings}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ignore}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \subsection{1. Implement Gradient
+Descent}\label{implement-gradient-descent}
+
+\paragraph{1.1 Implement a basic gradient descent
+procedure}\label{implement-a-basic-gradient-descent-procedure}
+
+The below optimize function is a generic implementation of the gradient
+descent. It takes the cost function and the gradient function as
+parameters and converges till the convergence criteria is met.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{k}{def} \PY{n+nf}{optimize}\PY{p}{(}\PY{n}{costfunc}\PY{p}{,} \PY{n}{gradfunc}\PY{p}{,} \PY{n}{theta}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.05}\PY{p}{,} \PY{n}{convergence}\PY{o}{=}\PY{l+m+mf}{0.0001}\PY{p}{,} \PY{n}{max\PYZus{}iteration}\PY{o}{=}\PY{l+m+mi}{1000000}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} }
+        \PY{l+s+sd}{    @param costfunc(weight vector, feature matrix, result vector): callable: computes cost of the objective}
+        \PY{l+s+sd}{    @param gradfunc(weight vector, feature matrix, result vector): callable: computes gradient of the objective}
+        \PY{l+s+sd}{    @param: theta: vector: represents the initial guess of the weight vector that needs to be optimized}
+        \PY{l+s+sd}{    @param: X: matrix: the feature matrix}
+        \PY{l+s+sd}{    @param: y: vector: the output/result vector}
+        \PY{l+s+sd}{    @param: alpha: non\PYZhy{}neg real: the step count}
+        \PY{l+s+sd}{    @param: convergence: non\PYZhy{}neg real: the criteria on which the loop will end}
+        \PY{l+s+sd}{    @param: max\PYZus{}iteration: int: hard stop for the number of iterations if the convergence criteria is not met}
+        \PY{l+s+sd}{    @param: debug: bool: to test the method and plot graphs}
+        \PY{l+s+sd}{    }
+        \PY{l+s+sd}{    @return: theta: vector: the optimized value of the weight vector}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{n}{iterations} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+            \PY{n}{costs} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+            \PY{n}{cost} \PY{o}{=} \PY{n}{costfunc}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+            \PY{n}{converged} \PY{o}{=} \PY{k+kc}{False}
+            \PY{n}{iteration} \PY{o}{=} \PY{l+m+mi}{0}
+            \PY{k}{while} \PY{k+kc}{True} \PY{o+ow}{and} \PY{n}{iteration} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{max\PYZus{}iteration}\PY{p}{:}
+                \PY{n}{iteration} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+                \PY{n}{grad} \PY{o}{=} \PY{n}{gradfunc}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+                \PY{n}{theta} \PY{o}{=} \PY{n}{theta} \PY{o}{\PYZhy{}} \PY{n}{alpha}\PY{o}{*}\PY{n}{grad}
+                \PY{k}{if} \PY{n}{np}\PY{o}{.}\PY{n}{isnan}\PY{p}{(}\PY{n}{theta}\PY{p}{)}\PY{o}{.}\PY{n}{any}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                    \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Optimize function diverged.. }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                \PY{n}{new\PYZus{}cost} \PY{o}{=} \PY{n}{costfunc}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+                \PY{k}{if} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{cost} \PY{o}{\PYZhy{}} \PY{n}{new\PYZus{}cost}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n}{convergence}\PY{p}{:}
+                    \PY{k}{break}
+                \PY{n}{cost} \PY{o}{=} \PY{n}{new\PYZus{}cost}
+                \PY{n}{iterations}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{iteration}\PY{p}{)}
+                \PY{n}{costs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{cost}\PY{p}{)}
+            \PY{k}{if} \PY{o+ow}{not} \PY{n}{debug}\PY{p}{:}
+                \PY{k}{return} \PY{n}{theta}
+            \PY{k}{else}\PY{p}{:}
+                \PY{k}{return} \PY{n}{iterations}\PY{p}{,} \PY{n}{costs}\PY{p}{,} \PY{n}{theta}
+\end{Verbatim}
+
+
+    \paragraph{1.2 Test Gradient function
+with:}\label{test-gradient-function-with}
+
+\subparagraph{(a.) Convex function}\label{a.-convex-function}
+
+For the convex function, we use a simple paraboloid with a global
+minimum at 0,0: \[ f = w1^2 + w2^2 \]
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{k}{def} \PY{n+nf}{cost\PYZus{}convex}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    @return: real: the value of the objective function}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{theta}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{grad\PYZus{}convex}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+        \PY{l+s+sd}{    @return: real: the gradient of the objective function}
+        \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+            \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{theta}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{optimize}\PY{p}{(}\PY{n}{cost\PYZus{}convex}\PY{p}{,} \PY{n}{grad\PYZus{}convex}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.23}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}5}]:} array([[ 0.07616832],
+               [-0.07547926]])
+\end{Verbatim}
+            
+    \subparagraph{Discuss the effect of the choice of starting guess, the
+step size, and the convergence criterion on the resulting
+solution.}\label{discuss-the-effect-of-the-choice-of-starting-guess-the-step-size-and-the-convergence-criterion-on-the-resulting-solution.}
+
+\textbf{Initial guess:} My initial guess for the weight vector (theta)
+is a random generator. It does not matter what the initial guess is
+becuase the gradient descent will converge with any value of the initial
+guess.
+
+\textbf{Step size:} As we can see from the graphs below, the step count
+(alpha) of \textasciitilde{}0.2 converges fastest and the cost for that
+is also \textasciitilde{}0.
+
+\textbf{Convergence criteria:} The convergence criteria is left as the
+default value of 0.0001
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{alpha\PYZus{}lst} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{0.6}\PY{p}{,} \PY{l+m+mf}{0.01}\PY{p}{)}\PY{p}{)}
+         \PY{n}{iterations} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+         \PY{n}{costs} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+         \PY{k}{for} \PY{n}{alpha} \PY{o+ow}{in} \PY{n}{copy}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{)}\PY{p}{:}
+             \PY{n}{iters} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+             \PY{n}{cost} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+             \PY{k}{try}\PY{p}{:}
+                 \PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{cost\PYZus{}convex}\PY{p}{,} \PY{n}{grad\PYZus{}convex}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{n}{alpha}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+                 \PY{n}{iterations}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{iters}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+                 \PY{n}{costs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{cost}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+             \PY{k}{except} \PY{n+ne}{Exception}\PY{p}{:}
+                 \PY{n}{alpha\PYZus{}lst}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{n}{alpha}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Parameter setting for convex function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 
+         \PY{n}{ax1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{211}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{,} \PY{n}{iterations}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count vs Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{n}{ax1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{212}\PY{p}{,} \PY{n}{sharex}\PY{o}{=}\PY{n}{ax1}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{,} \PY{n}{costs}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step Count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Costs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count vs Costs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Parameter setting for convex function
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_7_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{cost\PYZus{}convex}\PY{p}{,} \PY{n}{grad\PYZus{}convex}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost vs Iterations for chosen step count = 0.2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:} Text(0.5,1,'Cost vs Iterations for chosen step count = 0.2')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subparagraph{(b.) non-convex function}\label{b.-non-convex-function}
+
+For the Non-convex function, we use a sine function. Since sin does not
+have a global minimum, we may converge to any point that let's us reach
+the minimum value of the sin function (i.e. approx -1)
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{c+c1}{\PYZsh{} Non\PYZhy{}convex function: f = sin(x) ==\PYZgt{} No global minima}
+         \PY{k}{def} \PY{n+nf}{cost\PYZus{}non\PYZus{}convex}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+         \PY{l+s+sd}{    @return: real: the value of the objective function}
+         \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+             \PY{k}{return} \PY{n}{math}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{theta}\PY{p}{)}
+         
+         \PY{k}{def} \PY{n+nf}{grad\PYZus{}non\PYZus{}convex}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+         \PY{l+s+sd}{    @return: real: the gradient of the objective function}
+         \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+             \PY{k}{return} \PY{n}{math}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{n}{theta}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{radians}\PY{p}{(}\PY{l+m+mi}{88}\PY{p}{)} \PY{c+c1}{\PYZsh{} close to local maxima as sin(90) = 1}
+         \PY{n}{w} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{cost\PYZus{}non\PYZus{}convex}\PY{p}{,} \PY{n}{grad\PYZus{}non\PYZus{}convex}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{1.25}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Optimal weight:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{math}\PY{o}{.}\PY{n}{degrees}\PY{p}{(}\PY{n}{w}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{radians}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Sine value of the optimal weight:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{math}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{w}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{which is approx \PYZhy{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Optimal weight: -90.08527585977758 radians
+Sine value of the optimal weight: -0.999998892415491 which is approx -1
+
+    \end{Verbatim}
+
+    We get a local minima of -90 degree radians whose sine value is
+quivalent to approx -1 (the local minimum value)
+
+    \subparagraph{Discuss the effect of the choice of starting guess, the
+step size, and the convergence criterion on the resulting
+solution.}\label{discuss-the-effect-of-the-choice-of-starting-guess-the-step-size-and-the-convergence-criterion-on-the-resulting-solution.}
+
+\textbf{Initial guess:} My initial guess for the weight vector (theta)
+is a random generator. It does not matter what the initial guess is
+becuase the gradient descent will converge with any value of the initial
+guess.
+
+\textbf{Step size:} As we can see from the graphs below, the step count
+(alpha) of \textasciitilde{}1.25 converges fastest and the cost for that
+is also approx 0.
+
+\textbf{Convergence criteria:} The convergence criteria is left as the
+default value of 0.0001
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{radians}\PY{p}{(}\PY{l+m+mi}{88}\PY{p}{)} \PY{c+c1}{\PYZsh{} close to local maxima as sin(90) = 1}
+         \PY{n}{alpha\PYZus{}lst} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{1.8}\PY{p}{,} \PY{l+m+mf}{0.01}\PY{p}{)}\PY{p}{)}
+         \PY{n}{iterations} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+         \PY{n}{costs} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+         \PY{k}{for} \PY{n}{alpha} \PY{o+ow}{in} \PY{n}{copy}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{)}\PY{p}{:}
+             \PY{n}{iters} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+             \PY{n}{cost} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+             \PY{k}{try}\PY{p}{:}
+                 \PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{cost\PYZus{}non\PYZus{}convex}\PY{p}{,} \PY{n}{grad\PYZus{}non\PYZus{}convex}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{n}{alpha}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+                 \PY{n}{iterations}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{iters}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+                 \PY{n}{costs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{cost}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+             \PY{k}{except} \PY{n+ne}{Exception} \PY{k}{as} \PY{n}{e}\PY{p}{:}
+                 \PY{n}{alpha\PYZus{}lst}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{n}{alpha}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Parameter setting for non\PYZhy{}convex function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{n}{ax1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{211}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{,} \PY{n}{iterations}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count vs Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{n}{ax2} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{212}\PY{p}{,} \PY{n}{sharex}\PY{o}{=}\PY{n}{ax1}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{,} \PY{n}{costs}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} plt.yscale(\PYZsq{}log\PYZsq{})}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step Count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Costs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count vs Costs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Parameter setting for non-convex function
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{cost\PYZus{}non\PYZus{}convex}\PY{p}{,} \PY{n}{grad\PYZus{}non\PYZus{}convex}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{1.25}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost vs Iterations for chosen step count = 1.25}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}16}]:} Text(0.5,1,'Cost vs Iterations for chosen step count = 1.25')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_15_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{1.3 Write code to approximate the gradient of a function
+numerically at a given point using central
+differences}\label{write-code-to-approximate-the-gradient-of-a-function-numerically-at-a-given-point-using-central-differences}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{k}{def} \PY{n+nf}{approx\PYZus{}grad}\PY{p}{(}\PY{n}{costfunc}\PY{p}{,} \PY{n}{theta}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{h}\PY{o}{=}\PY{l+m+mf}{0.001}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+         \PY{l+s+sd}{    @param costfunc(weight vector, feature matrix, result vector): callable: computes cost of the objective}
+         \PY{l+s+sd}{    @param: theta: vector: represents the initial guess of the weight vector that needs to be optimized}
+         \PY{l+s+sd}{    @param: X: matrix: the feature matrix}
+         \PY{l+s+sd}{    @param: y: vector: the output/result vector}
+         \PY{l+s+sd}{    @param: h: real: the difference parameter for the formula}
+         \PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+             \PY{n}{grad} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{theta}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+             \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{theta}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{sub\PYZus{}h\PYZus{}theta} \PY{o}{=} \PY{n}{copy}\PY{p}{(}\PY{n}{theta}\PY{p}{)}
+                 \PY{n}{sub\PYZus{}h\PYZus{}theta}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{n}{h}
+                 \PY{n}{add\PYZus{}h\PYZus{}theta} \PY{o}{=} \PY{n}{copy}\PY{p}{(}\PY{n}{theta}\PY{p}{)}
+                 \PY{n}{add\PYZus{}h\PYZus{}theta}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n}{h}
+                 \PY{n}{grad}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{costfunc}\PY{p}{(}\PY{n}{add\PYZus{}h\PYZus{}theta}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{costfunc}\PY{p}{(}\PY{n}{sub\PYZus{}h\PYZus{}theta}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{h}\PY{p}{)}
+             \PY{k}{return} \PY{n}{grad}
+\end{Verbatim}
+
+
+    \subparagraph{Verify its behavior on the functions you used in the
+question above by comparing the analytic and numerical gradients at
+various
+points.}\label{verify-its-behavior-on-the-functions-you-used-in-the-question-above-by-comparing-the-analytic-and-numerical-gradients-at-various-points.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+         \PY{l+s+sd}{Note: This code depends on code from problem 2; }
+         \PY{l+s+sd}{so if you want to run it, you need to run the problem code before running this}
+         \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+         \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{3}
+         \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+         \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{tmp\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{test\PYZus{}1} \PY{o}{=} \PY{n}{sse\PYZus{}grad}\PY{p}{(}\PY{n}{tmp\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+         \PY{n}{test\PYZus{}2} \PY{o}{=} \PY{n}{approx\PYZus{}grad}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{tmp\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test 1}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{test\PYZus{}1}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test 2}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{test\PYZus{}2}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+test 1
+ [[ 21.28878047]
+ [ 16.57283738]
+ [ 13.50778302]
+ [ 11.36548174]]
+test 2
+ [[ 21.28878047]
+ [ 16.57283738]
+ [ 13.50778302]
+ [ 11.36548174]]
+
+    \end{Verbatim}
+
+    \textbf{Comparison results of computing using finite difference method}
+- test\_1: computed using the formula of the gradient on a random vector
+of weights - test\_2: computed using the finite difference method on the
+random vector of weights (same as in test\_1)
+
+As we can see above, test\_1 and test\_2 match
+
+    \paragraph{1.4 Compare the behavior of your gradient descent procedure
+with one the more sophisticated
+optimizers}\label{compare-the-behavior-of-your-gradient-descent-procedure-with-one-the-more-sophisticated-optimizers}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{radians}\PY{p}{(}\PY{l+m+mi}{88}\PY{p}{)}
+         \PY{n}{iters} \PY{o}{=} \PY{l+m+mi}{0}
+         \PY{k}{def} \PY{n+nf}{\PYZus{}non\PYZus{}convex\PYZus{}cst}\PY{p}{(}\PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{} workaround to compute no. of iterations}
+             \PY{k}{global} \PY{n}{iters}
+             \PY{n}{iters} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+             \PY{k}{return} \PY{n}{cost\PYZus{}non\PYZus{}convex}\PY{p}{(}\PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}
+             
+         \PY{n}{w1} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{\PYZus{}non\PYZus{}convex\PYZus{}cst}\PY{p}{,} \PY{n}{grad\PYZus{}non\PYZus{}convex}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{1.25}\PY{p}{)}
+         \PY{n}{i1} \PY{o}{=} \PY{n}{iters}
+         \PY{n}{iters} \PY{o}{=} \PY{l+m+mi}{0}
+         \PY{n}{w2} \PY{o}{=} \PY{n}{minimize}\PY{p}{(}\PY{n}{\PYZus{}non\PYZus{}convex\PYZus{}cst}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{)}\PY{o}{.}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         \PY{n}{i2} \PY{o}{=} \PY{n}{iters}
+         \PY{n}{iters} \PY{o}{=} \PY{l+m+mi}{0}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Test for Non\PYZhy{}convex function:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{10}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Minimized value of my implementation of optimize method: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{math}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{w1}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{with}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{i1}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Minimized value of a sophisticated optimizer:        }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{math}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{w2}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{with}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{i2}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         
+         \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+         \PY{k}{def} \PY{n+nf}{\PYZus{}convex\PYZus{}cst}\PY{p}{(}\PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{} workaround to compute no. of iterations}
+             \PY{k}{global} \PY{n}{iters}
+             \PY{n}{iters} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+             \PY{k}{return} \PY{n}{cost\PYZus{}convex}\PY{p}{(}\PY{o}{*}\PY{n}{args}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}
+         
+         \PY{n}{iters} \PY{o}{=} \PY{l+m+mi}{0}
+         \PY{n}{w1} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{\PYZus{}convex\PYZus{}cst}\PY{p}{,} \PY{n}{grad\PYZus{}convex}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{k+kc}{None}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.23}\PY{p}{)}
+         \PY{n}{i1} \PY{o}{=} \PY{n}{iters}
+         \PY{n}{iters} \PY{o}{=} \PY{l+m+mi}{0}
+         \PY{n}{w2} \PY{o}{=} \PY{n}{minimize}\PY{p}{(}\PY{n}{\PYZus{}convex\PYZus{}cst}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{)}\PY{o}{.}\PY{n}{x}
+         \PY{n}{i2} \PY{o}{=} \PY{n}{iters}
+         \PY{n}{iters} \PY{o}{=} \PY{l+m+mi}{0}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Test for Convex function:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{10}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Minimized value of my implementation of optimize method: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{w1}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{with}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{i1}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Minimized value of a sophisticated optimizer:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{w2}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{with}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{i2}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Test for Non-convex function:
+----------
+Minimized value of my implementation of optimize method:  -0.999998892415491 with 10 iterations
+Minimized value of a sophisticated optimizer:         -0.9999999999985059 with 30 iterations
+
+Test for Convex function:
+----------
+Minimized value of my implementation of optimize method:  [-0.06350405  0.06389738] with 4 iterations
+Minimized value of a sophisticated optimizer: [ -7.28022612e-09  -5.81896942e-09] with 16 iterations
+
+    \end{Verbatim}
+
+    \subsection{2. Linear Basis Function
+Regression}\label{linear-basis-function-regression}
+
+\paragraph{Util methods}\label{util-methods}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{k}{def} \PY{n+nf}{getData}\PY{p}{(}\PY{n}{name}\PY{p}{)}\PY{p}{:}
+             \PY{n}{data} \PY{o}{=} \PY{n}{pl}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{n}{name}\PY{p}{)}
+             \PY{c+c1}{\PYZsh{} Returns column matrices}
+             \PY{n}{X} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{T}
+             \PY{n}{Y} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{.}\PY{n}{T}
+             \PY{k}{return} \PY{n}{X}\PY{p}{,} \PY{n}{Y}
+         
+         \PY{k}{def} \PY{n+nf}{bishopCurveData}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{c+c1}{\PYZsh{} y = sin(2 pi x) + N(0,0.3),}
+             \PY{k}{return} \PY{n}{getData}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{curvefitting.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{k}{def} \PY{n+nf}{regressAData}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{getData}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{regressA\PYZus{}train.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{k}{def} \PY{n+nf}{regressBData}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{getData}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{regressB\PYZus{}train.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{k}{def} \PY{n+nf}{validateData}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{getData}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{regress\PYZus{}validate.txt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} X is an array of N data points (one dimensional for now), that is, NX1}
+         \PY{c+c1}{\PYZsh{} Y is a Nx1 column vector of data values}
+         \PY{c+c1}{\PYZsh{} order is the order of the highest order polynomial in the basis functions}
+         \PY{k}{def} \PY{n+nf}{regressionPlot}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{order}\PY{p}{)}\PY{p}{:}
+             \PY{n}{pl}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{Y}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+             \PY{c+c1}{\PYZsh{} You will need to write the designMatrix and regressionFit function}
+         
+             \PY{c+c1}{\PYZsh{} constuct the design matrix, the 0th column is just 1s.}
+             \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+             \PY{c+c1}{\PYZsh{} compute the weight vector}
+             \PY{n}{w} \PY{o}{=} \PY{n}{regressionFit}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{Y}\PY{p}{,} \PY{n}{phi}\PY{p}{)}
+             \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{w}\PY{p}{)}
+         
+             \PY{c+c1}{\PYZsh{} produce a plot of the values of the function }
+             \PY{n}{pts} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{p}\PY{p}{]} \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n}{pl}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n+nb}{min}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{,} \PY{n+nb}{max}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+             \PY{n}{Yp} \PY{o}{=} \PY{n}{pl}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{w}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{pts}\PY{p}{,} \PY{n}{order}\PY{p}{)}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+             \PY{n}{pl}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{pts}\PY{p}{,} \PY{n}{Yp}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+             
+         \PY{k}{def} \PY{n+nf}{plot\PYZus{}data}\PY{p}{(}\PY{n}{w}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{order}\PY{p}{)}\PY{p}{:}
+             \PY{n}{pl}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{y}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{pts} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{n}{p}\PY{p}{]} \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n}{pl}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n+nb}{min}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{,} \PY{n+nb}{max}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+             \PY{n}{Yp} \PY{o}{=} \PY{n}{pl}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{w}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{pts}\PY{p}{,} \PY{n}{order}\PY{p}{)}\PY{o}{.}\PY{n}{T}\PY{p}{)}
+             \PY{n}{pl}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{pts}\PY{p}{,} \PY{n}{Yp}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+
+
+    \paragraph{2.1 Write a procedure for computing the maximum likelihood
+weight
+vector}\label{write-a-procedure-for-computing-the-maximum-likelihood-weight-vector}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{k}{def} \PY{n+nf}{lin\PYZus{}normal\PYZus{}eq}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{pinv}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{y}\PY{p}{)}  \PY{c+c1}{\PYZsh{} (mxm) * mxn * nx1}
+         
+         \PY{k}{def} \PY{n+nf}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}\PY{p}{:}
+             \PY{k}{if} \PY{n+nb}{type}\PY{p}{(}\PY{n}{X}\PY{p}{)} \PY{o+ow}{is} \PY{n+nb}{list}\PY{p}{:}
+                 \PY{n}{X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+             \PY{n}{phi} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{shape}\PY{o}{=}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{,} \PY{n}{order}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+             \PY{k}{for} \PY{n}{col} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{phi}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{n}{col}\PY{p}{]} \PY{o}{=} \PY{p}{[}\PY{n}{X}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{*}\PY{o}{*}\PY{n}{col} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{)}\PY{p}{]}
+             \PY{k}{return} \PY{n}{phi}
+         
+         \PY{k}{def} \PY{n+nf}{regressionFit}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{phi}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{lin\PYZus{}normal\PYZus{}eq}\PY{p}{(}\PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+\end{Verbatim}
+
+
+    \paragraph{Test your solution by replicating the plots in the Appendix
+Figure 1 and the weight values in Table 2. You should be able to get
+very close
+agreement.}\label{test-your-solution-by-replicating-the-plots-in-the-appendix-figure-1-and-the-weight-values-in-table-2.-you-should-be-able-to-get-very-close-agreement.}
+
+** Order = 0 **
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+         \PY{n}{regressionPlot}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+w [[ 0.1862995]]
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    ** Order = 1 **
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n}{regressionPlot}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+w [[ 0.82021246]
+ [-1.26782593]]
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    ** Order = 3 **
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{n}{regressionPlot}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+w [[  0.31370273]
+ [  7.98537103]
+ [-25.42610224]
+ [ 17.37407653]]
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    ** Order = 9 **
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{n}{regressionPlot}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{l+m+mi}{9}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+w [[  3.49489438e-01]
+ [  2.32124232e+02]
+ [ -5.31621068e+03]
+ [  4.85179220e+04]
+ [ -2.31403541e+05]
+ [  6.39402425e+05]
+ [ -1.06075647e+06]
+ [  1.04139065e+06]
+ [ -5.57150342e+05]
+ [  1.25083352e+05]]
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_34_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{1.2 Now, write functions to compute the sum of squares error
+(SSE) (and its derivative) for a data set and a hypothesis, specified by
+the list of M polynomial basis functions and a weight
+vector.}\label{now-write-functions-to-compute-the-sum-of-squares-error-sse-and-its-derivative-for-a-data-set-and-a-hypothesis-specified-by-the-list-of-m-polynomial-basis-functions-and-a-weight-vector.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{k}{def} \PY{n+nf}{sse}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{:}
+             \PY{n}{hypothesis} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{theta}\PY{p}{)}  \PY{c+c1}{\PYZsh{} nxm*mx1 = nx1}
+             \PY{n}{error} \PY{o}{=} \PY{n}{hypothesis} \PY{o}{\PYZhy{}} \PY{n}{y}  \PY{c+c1}{\PYZsh{} nx1\PYZhy{}nx1 = nx1}
+             \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{error}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}  \PY{c+c1}{\PYZsh{} = 1x1 (scalar)}
+         
+         \PY{k}{def} \PY{n+nf}{sse\PYZus{}grad}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{:}
+             \PY{n}{hypothesis} \PY{o}{=} \PY{n}{X}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{theta}\PY{p}{)}  \PY{c+c1}{\PYZsh{} nxm*mx1 = nx1}
+             \PY{n}{error} \PY{o}{=} \PY{n}{hypothesis} \PY{o}{\PYZhy{}} \PY{n}{y}  \PY{c+c1}{\PYZsh{} nx1\PYZhy{}nx1 = nx1}
+             \PY{n}{grad} \PY{o}{=} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{error}\PY{p}{)}
+             \PY{k}{return} \PY{n}{grad}
+\end{Verbatim}
+
+
+    \paragraph{Verify your gradient using the numerical derivative
+code.}\label{verify-your-gradient-using-the-numerical-derivative-code.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{3}
+         \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+         \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{opt} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{sse\PYZus{}grad}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.062}\PY{p}{,} \PY{n}{convergence}\PY{o}{=}\PY{l+m+mf}{0.0000005}\PY{p}{)}
+         
+         \PY{n}{test\PYZus{}1} \PY{o}{=} \PY{n}{sse\PYZus{}grad}\PY{p}{(}\PY{n}{opt}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+         \PY{n}{test\PYZus{}2} \PY{o}{=} \PY{n}{approx\PYZus{}grad}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{opt}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+         
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test 1}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{test\PYZus{}1}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{test 2}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{test\PYZus{}2}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+test 1
+ [[  6.06154277e-05]
+ [ -8.97562667e-04]
+ [  2.25970869e-03]
+ [ -1.46486582e-03]]
+test 2
+ [[  6.06154276e-05]
+ [ -8.97562668e-04]
+ [  2.25970869e-03]
+ [ -1.46486582e-03]]
+
+    \end{Verbatim}
+
+    \textbf{Comparison results of computing using finite difference method}
+
+\begin{itemize}
+\tightlist
+\item
+  test\_1: computed using the formula of the gradient on the optimum
+  weight vector of the bishop curve data
+\item
+  test\_2: computed using the finite difference method on the optimum
+  weight vector of the bishop curve data
+\end{itemize}
+
+As we can see above, test\_1 and test\_2 match
+
+    \paragraph{2.3 Use gradient descent on the SSE function to replicate the
+graphs in Appendix. Describe your experience with initial guesses, step
+sizes and convergence
+thresholds.}\label{use-gradient-descent-on-the-sse-function-to-replicate-the-graphs-in-appendix.-describe-your-experience-with-initial-guesses-step-sizes-and-convergence-thresholds.}
+
+\subparagraph{M=0}\label{m0}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}114}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{0}
+          \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+          \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+          \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{opt} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{sse\PYZus{}grad}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.05}\PY{p}{)}
+          \PY{n}{plot\PYZus{}data}\PY{p}{(}\PY{n}{opt}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_41_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{M=1}\label{m1}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}120}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{1}
+          \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+          \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+          \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{opt} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{sse\PYZus{}grad}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.007}\PY{p}{)}
+          \PY{n}{plot\PYZus{}data}\PY{p}{(}\PY{n}{opt}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_43_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{M=3}\label{m3}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}125}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{3}
+          \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+          \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+          \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{opt} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{sse\PYZus{}grad}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.062}\PY{p}{)}
+          \PY{n}{plot\PYZus{}data}\PY{p}{(}\PY{n}{opt}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_45_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subparagraph{M=9}\label{m9}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}138}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{9}
+          \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+          \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+          \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{opt} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{sse\PYZus{}grad}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.042}\PY{p}{)}
+          \PY{n}{plot\PYZus{}data}\PY{p}{(}\PY{n}{opt}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_47_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Describe your experience with initial guesses, step sizes and
+convergence
+thresholds.}\label{describe-your-experience-with-initial-guesses-step-sizes-and-convergence-thresholds.}
+
+\textbf{Initial guess:} My initial guess for the weight vector (theta)
+is a random generator. It does not matter what the initial guess is
+becuase the gradient descent will converge with any value of the initial
+guess.
+
+\textbf{Step size:} The graphs below describe my estimates for step
+count for each value of order
+
+\textbf{Convergence criteria:} The convergence criteria is left as the
+default value of 0.0001
+
+    \paragraph{M=0}\label{m0}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}142}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{0}
+          \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+          \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+          \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          
+          \PY{n}{alpha\PYZus{}lst} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{1.8}\PY{p}{,} \PY{l+m+mf}{0.01}\PY{p}{)}\PY{p}{)}
+          \PY{n}{iterations} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+          \PY{n}{costs} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+          \PY{k}{for} \PY{n}{alpha} \PY{o+ow}{in} \PY{n}{copy}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{)}\PY{p}{:}
+              \PY{n}{iters} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+              \PY{n}{cost} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+              \PY{k}{try}\PY{p}{:}
+                  \PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{sse\PYZus{}grad}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{n}{alpha}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+                  \PY{n}{iterations}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{iters}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+                  \PY{n}{costs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{cost}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+              \PY{k}{except} \PY{n+ne}{Exception} \PY{k}{as} \PY{n}{e}\PY{p}{:}
+                  \PY{n}{alpha\PYZus{}lst}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{n}{alpha}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Parameter setting for M=0 bishop curve function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          
+          \PY{n}{ax1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{211}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{,} \PY{n}{iterations}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count vs Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          
+          \PY{n}{ax2} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{212}\PY{p}{,} \PY{n}{sharex}\PY{o}{=}\PY{n}{ax1}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{,} \PY{n}{costs}\PY{p}{)}
+          \PY{c+c1}{\PYZsh{} plt.yscale(\PYZsq{}log\PYZsq{})}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step Count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Costs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count vs Costs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          
+          \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Parameter setting for M=0 bishop curve function
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_50_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}143}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{0}
+          \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+          \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+          \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{sse\PYZus{}grad}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.05}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+          \PY{c+c1}{\PYZsh{} print(iters, cost, w)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost vs Iterations for chosen step count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}143}]:} Text(0.5,1,'Cost vs Iterations for chosen step count')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_51_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{M=1}\label{m1}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}144}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{1}
+          \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+          \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+          \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          
+          \PY{n}{alpha\PYZus{}lst} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{1.8}\PY{p}{,} \PY{l+m+mf}{0.01}\PY{p}{)}\PY{p}{)}
+          \PY{n}{iterations} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+          \PY{n}{costs} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+          \PY{k}{for} \PY{n}{alpha} \PY{o+ow}{in} \PY{n}{copy}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{)}\PY{p}{:}
+              \PY{n}{iters} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+              \PY{n}{cost} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+              \PY{k}{try}\PY{p}{:}
+                  \PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{sse\PYZus{}grad}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{n}{alpha}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+                  \PY{n}{iterations}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{iters}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+                  \PY{n}{costs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{cost}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+              \PY{k}{except} \PY{n+ne}{Exception} \PY{k}{as} \PY{n}{e}\PY{p}{:}
+                  \PY{n}{alpha\PYZus{}lst}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{n}{alpha}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Parameter setting for M=1 bishop curve function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          
+          \PY{n}{ax1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{211}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{,} \PY{n}{iterations}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count vs Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          
+          \PY{n}{ax2} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{212}\PY{p}{,} \PY{n}{sharex}\PY{o}{=}\PY{n}{ax1}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{,} \PY{n}{costs}\PY{p}{)}
+          \PY{c+c1}{\PYZsh{} plt.yscale(\PYZsq{}log\PYZsq{})}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step Count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Costs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count vs Costs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          
+          \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Parameter setting for M=1 bishop curve function
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_53_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}145}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{1}
+          \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+          \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+          \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{sse\PYZus{}grad}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.05}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost vs Iterations for chosen step count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}145}]:} Text(0.5,1,'Cost vs Iterations for chosen step count')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_54_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{M=3}\label{m3}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}146}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{3}
+          \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+          \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+          \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          
+          \PY{n}{alpha\PYZus{}lst} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mf}{0.01}\PY{p}{)}\PY{p}{)}
+          \PY{n}{iterations} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+          \PY{n}{costs} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+          \PY{k}{for} \PY{n}{alpha} \PY{o+ow}{in} \PY{n}{copy}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{)}\PY{p}{:}
+              \PY{n}{iters} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+              \PY{n}{cost} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+              \PY{k}{try}\PY{p}{:}
+                  \PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{sse\PYZus{}grad}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{n}{alpha}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+                  \PY{n}{iterations}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{iters}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+                  \PY{n}{costs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{cost}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+              \PY{k}{except} \PY{n+ne}{Exception} \PY{k}{as} \PY{n}{e}\PY{p}{:}
+                  \PY{n}{alpha\PYZus{}lst}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{n}{alpha}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Parameter setting for M=3 bishop curve function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          
+          \PY{n}{ax1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{211}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{,} \PY{n}{iterations}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count vs Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          
+          \PY{n}{ax2} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{212}\PY{p}{,} \PY{n}{sharex}\PY{o}{=}\PY{n}{ax1}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{,} \PY{n}{costs}\PY{p}{)}
+          \PY{c+c1}{\PYZsh{} plt.yscale(\PYZsq{}log\PYZsq{})}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step Count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Costs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count vs Costs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          
+          \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Parameter setting for M=3 bishop curve function
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_56_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}147}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{3}
+          \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+          \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+          \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{sse\PYZus{}grad}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.06}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost vs Iterations for chosen step count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}147}]:} Text(0.5,1,'Cost vs Iterations for chosen step count')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_57_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{M=9}\label{m9}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}148}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{9}
+          \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+          \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+          \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          
+          \PY{n}{alpha\PYZus{}lst} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mf}{0.01}\PY{p}{)}\PY{p}{)}
+          \PY{n}{iterations} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+          \PY{n}{costs} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+          \PY{k}{for} \PY{n}{alpha} \PY{o+ow}{in} \PY{n}{copy}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{)}\PY{p}{:}
+              \PY{n}{iters} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+              \PY{n}{cost} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+              \PY{k}{try}\PY{p}{:}
+                  \PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{sse\PYZus{}grad}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{n}{alpha}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+                  \PY{n}{iterations}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{iters}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+                  \PY{n}{costs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{cost}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+              \PY{k}{except} \PY{n+ne}{Exception} \PY{k}{as} \PY{n}{e}\PY{p}{:}
+                  \PY{n}{alpha\PYZus{}lst}\PY{o}{.}\PY{n}{remove}\PY{p}{(}\PY{n}{alpha}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Parameter setting for M=9 bishop curve function}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          
+          \PY{n}{ax1} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{211}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{,} \PY{n}{iterations}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count vs Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          
+          \PY{n}{ax2} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{212}\PY{p}{,} \PY{n}{sharex}\PY{o}{=}\PY{n}{ax1}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{alpha\PYZus{}lst}\PY{p}{,} \PY{n}{costs}\PY{p}{)}
+          \PY{c+c1}{\PYZsh{} plt.yscale(\PYZsq{}log\PYZsq{})}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step Count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Costs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Step count vs Costs}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          
+          \PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Parameter setting for M=9 bishop curve function
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_59_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}149}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{9}
+          \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+          \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+          \PY{n}{initial\PYZus{}theta} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{rand}\PY{p}{(}\PY{n}{phi}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{,} \PY{n}{w} \PY{o}{=} \PY{n}{optimize}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{sse\PYZus{}grad}\PY{p}{,} \PY{n}{initial\PYZus{}theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.042}\PY{p}{,} \PY{n}{debug}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{iters}\PY{p}{,} \PY{n}{cost}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iterations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost vs Iterations for chosen step count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}149}]:} Text(0.5,1,'Cost vs Iterations for chosen step count')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_60_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{3 Ridge Regression}\label{ridge-regression}
+
+\paragraph{3.1 Implement ridge regression both analytically and via
+gradient
+descent}\label{implement-ridge-regression-both-analytically-and-via-gradient-descent}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{k}{def} \PY{n+nf}{ridge\PYZus{}normal\PYZus{}eq}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{penalty}\PY{o}{=}\PY{l+m+mf}{0.05}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{pinv}\PY{p}{(}\PY{n}{penalty}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{identity}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{+}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{X}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{X}\PY{o}{.}\PY{n}{T}\PY{p}{)}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{y}\PY{p}{)}
+         
+         \PY{k}{def} \PY{n+nf}{ridge\PYZus{}grad}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{penalty}\PY{o}{=}\PY{l+m+mf}{0.00005}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{n}{sse\PYZus{}grad}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)} \PY{o}{+} \PY{n}{penalty}\PY{o}{*}\PY{n}{theta}
+\end{Verbatim}
+
+
+    \paragraph{Experiment with different values of λ on the simple data from
+Appendix Figure 1, for various values of M. Describe your
+observations.}\label{experiment-with-different-values-of-ux3bb-on-the-simple-data-from-appendix-figure-1-for-various-values-of-m.-describe-your-observations.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{k}{def} \PY{n+nf}{test\PYZus{}lambda}\PY{p}{(}\PY{n}{costfunc}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{X\PYZus{}val}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{y\PYZus{}val}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{} method to plot the multipls lambdas against the cost of choosing it\PYZsq{}\PYZsq{}\PYZsq{}}
+             \PY{n}{costs} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+             \PY{n}{validation\PYZus{}costs} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+             \PY{n}{penalties} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{l+m+mf}{10.0}\PY{p}{,} \PY{l+m+mf}{0.001}\PY{p}{)}\PY{p}{)}
+             \PY{k}{for} \PY{n}{penalty} \PY{o+ow}{in} \PY{n}{penalties}\PY{p}{:}        
+                 \PY{n}{theta} \PY{o}{=} \PY{n}{ridge\PYZus{}normal\PYZus{}eq}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{penalty}\PY{o}{=}\PY{n}{penalty}\PY{p}{)}
+                 \PY{n}{costs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{costfunc}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{)}
+                 \PY{k}{if} \PY{n}{X\PYZus{}val} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+                     \PY{n}{validation\PYZus{}costs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{costfunc}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{X\PYZus{}val}\PY{p}{,} \PY{n}{y\PYZus{}val}\PY{p}{)}\PY{p}{)}
+             \PY{k}{if} \PY{n}{X\PYZus{}val} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+                 \PY{k}{return} \PY{n}{penalties}\PY{p}{,} \PY{n}{costs}
+             \PY{k}{else}\PY{p}{:}
+                 \PY{k}{return} \PY{n}{penalties}\PY{p}{,} \PY{n}{costs}\PY{p}{,} \PY{n}{validation\PYZus{}costs}
+         
+         \PY{k}{def} \PY{n+nf}{\PYZus{}order\PYZus{}plot}\PY{p}{(}\PY{n}{order}\PY{p}{)}\PY{p}{:}
+             \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+             \PY{n}{penalties}\PY{p}{,} \PY{n}{costs} \PY{o}{=} \PY{n}{test\PYZus{}lambda}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{penalties}\PY{p}{,} \PY{n}{costs}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{}     plt.yscale(\PYZsq{}log\PYZsq{})}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Lambda}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Lambda vs Cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    Below are the various plots of increasing values of lambda against
+multiple order values.
+
+\subparagraph{M = 0}\label{m-0}
+
+We can see that for M=0, the cost (y-axis) begins from approx 3.6 which
+seems correct as the hypothesis grosly underfits the data. The cost
+keeps on increasing as we increase lambda which also makes sense as
+increasing lambda regularizes the weights which increases the
+underfitting.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{bishopCurveData}\PY{p}{(}\PY{p}{)}
+         \PY{n}{\PYZus{}order\PYZus{}plot}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_66_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subparagraph{M=1}\label{m1}
+
+M=1 is similar to order 0, where the hypothesis is underfitting the
+training data. It's lesser than M=0, but it's still large enough to not
+give us any good predictions. And again, as we saw in M=0, increasing
+lambda increases the cost.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{\PYZus{}order\PYZus{}plot}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_68_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subparagraph{M=3}\label{m3}
+
+Here, we know that the hypothesis with M=3 fits the training data well
+which is also shown in the plot below. The cost is not 0 (which would
+indicate overfitting) but is low enough for us to label it as a good fit
+to the training data.
+
+Looking at the graph, when Lambda is 0, the cost is minimum (not 0).
+This makes sense, because regularization is useful in cases when we
+overfit data, but M=3 is not overfitting the data, and hence increasing
+the lambda increases the cost (i.e. underfits the data).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{n}{\PYZus{}order\PYZus{}plot}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_70_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subparagraph{M=9}\label{m9}
+
+Lastly, for M=9, we see that the cost is 0 for 0 lambda. This is usually
+an indication that the model has overfit the data. Now the cost also
+increases as we increase lambda; this makes sense because as we
+regularize the parameters, we are moving away from a perfict fit on the
+training data. This results in increasing the costs.
+
+If we study the graph more closely, the curve flattens as we reach a
+value of approx 3.8. This is also displayed on all the 3 graphs above,
+for M=3, M=1 and M=0. This means, that by increasing the lambda, we are
+forcing it to a straight line whose cost on the training data is approx
+3.8.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{n}{\PYZus{}order\PYZus{}plot}\PY{p}{(}\PY{l+m+mi}{9}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_72_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{3.2 We have given you three additional data sets: there are
+two training data sets and one validation set. In general, we want to
+use the training data to optimize parameters and then use the
+performance of those parameters on the validation data to choose among
+models (e.g. values of M and values of λ), this is called ``model
+selection''. Show some values of M and λ, and show the effect on the fit
+in the test and validation data. Which values work best for each of the
+training data sets?
+Explain.}\label{we-have-given-you-three-additional-data-sets-there-are-two-training-data-sets-and-one-validation-set.-in-general-we-want-to-use-the-training-data-to-optimize-parameters-and-then-use-the-performance-of-those-parameters-on-the-validation-data-to-choose-among-models-e.g.-values-of-m-and-values-of-ux3bb-this-is-called-model-selection.-show-some-values-of-m-and-ux3bb-and-show-the-effect-on-the-fit-in-the-test-and-validation-data.-which-values-work-best-for-each-of-the-training-data-sets-explain.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{k}{def} \PY{n+nf}{test\PYZus{}order}\PY{p}{(}\PY{n}{costfunc}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{X\PYZus{}val}\PY{p}{,} \PY{n}{y\PYZus{}val}\PY{p}{)}\PY{p}{:}
+             \PY{n}{costs} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+             \PY{n}{orders} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{)}
+             \PY{n}{validation\PYZus{}costs} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}    
+             \PY{k}{for} \PY{n}{order} \PY{o+ow}{in} \PY{n}{orders}\PY{p}{:}
+                 \PY{n}{phi} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+                 \PY{n}{phi\PYZus{}val} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{X\PYZus{}val}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+                 \PY{n}{theta} \PY{o}{=} \PY{n}{lin\PYZus{}normal\PYZus{}eq}\PY{p}{(}\PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+                 \PY{n}{validation\PYZus{}costs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{costfunc}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{phi\PYZus{}val}\PY{p}{,} \PY{n}{y\PYZus{}val}\PY{p}{)}\PY{p}{)}
+                 \PY{n}{costs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{costfunc}\PY{p}{(}\PY{n}{theta}\PY{p}{,} \PY{n}{phi}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{)}
+             \PY{k}{return} \PY{n}{orders}\PY{p}{,} \PY{n}{costs}\PY{p}{,} \PY{n}{validation\PYZus{}costs}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}42}]:} \PY{n}{Xa}\PY{p}{,} \PY{n}{ya} \PY{o}{=} \PY{n}{regressAData}\PY{p}{(}\PY{p}{)}
+         \PY{n}{Xb}\PY{p}{,} \PY{n}{yb} \PY{o}{=} \PY{n}{regressBData}\PY{p}{(}\PY{p}{)}
+         \PY{n}{Xc}\PY{p}{,} \PY{n}{yc} \PY{o}{=} \PY{n}{validateData}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{n}{orders}\PY{p}{,} \PY{n}{costs\PYZus{}a}\PY{p}{,} \PY{n}{validation\PYZus{}costs\PYZus{}a} \PY{o}{=} \PY{n}{test\PYZus{}order}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{Xa}\PY{p}{,} \PY{n}{ya}\PY{p}{,} \PY{n}{Xc}\PY{p}{,} \PY{n}{yc}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{orders}\PY{p}{,} \PY{n}{costs\PYZus{}a}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{orders}\PY{p}{,} \PY{n}{validation\PYZus{}costs\PYZus{}a}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{yscale}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Order}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Order vs Cost for Data\PYZhy{}Set\PYZhy{}A (Red) and Validation\PYZhy{}Set (Blue)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}43}]:} Text(0.5,1,'Order vs Cost for Data-Set-A (Red) and Validation-Set (Blue)')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_76_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Here, we've plotted a graph of Oder vs Cost for data set A (red) and
+validation set (blue). We can see that the model that fits the
+validation set best is when order=1.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}44}]:} \PY{n}{orders}\PY{p}{,} \PY{n}{costs\PYZus{}b}\PY{p}{,} \PY{n}{validation\PYZus{}costs\PYZus{}b} \PY{o}{=} \PY{n}{test\PYZus{}order}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{Xb}\PY{p}{,} \PY{n}{yb}\PY{p}{,} \PY{n}{Xc}\PY{p}{,} \PY{n}{yc}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{orders}\PY{p}{,} \PY{n}{costs\PYZus{}b}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{orders}\PY{p}{,} \PY{n}{validation\PYZus{}costs\PYZus{}b}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{yscale}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Order}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Order vs Cost for Data\PYZhy{}Set\PYZhy{}B (Green) and Validation\PYZhy{}Set (Blue)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}44}]:} Text(0.5,1,'Order vs Cost for Data-Set-B (Green) and Validation-Set (Blue)')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_78_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Here, we've plotted a graph of Oder vs Cost for data set B (green) and
+validation set (blue). We can see that the model that fits the
+validation set best is when order=3.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}45}]:} \PY{n}{Xa}\PY{p}{,} \PY{n}{ya} \PY{o}{=} \PY{n}{regressAData}\PY{p}{(}\PY{p}{)}
+         \PY{n}{Xb}\PY{p}{,} \PY{n}{yb} \PY{o}{=} \PY{n}{regressBData}\PY{p}{(}\PY{p}{)}
+         \PY{n}{Xc}\PY{p}{,} \PY{n}{yc} \PY{o}{=} \PY{n}{validateData}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    Having learned from the above graphs, we now set the order to 1 for data
+A and that to 3 for data B.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}63}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{1}
+         \PY{n}{phia} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{Xa}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{phic} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{Xc}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         
+         \PY{n}{penalties}\PY{p}{,} \PY{n}{costs\PYZus{}a}\PY{p}{,} \PY{n}{validation\PYZus{}costs\PYZus{}a} \PY{o}{=} \PY{n}{test\PYZus{}lambda}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{phia}\PY{p}{,} \PY{n}{ya}\PY{p}{,} \PY{n}{phic}\PY{p}{,} \PY{n}{yc}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{penalties}\PY{p}{,} \PY{n}{costs\PYZus{}a}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{penalties}\PY{p}{,} \PY{n}{validation\PYZus{}costs\PYZus{}a}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} plt.yscale(\PYZsq{}log\PYZsq{})}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Lambda}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Lambda vs Cost for Data\PYZhy{}Set\PYZhy{}A (Red) and Validation\PYZhy{}Set (Blue)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}63}]:} Text(0.5,1,'Lambda vs Cost for Data-Set-A (Red) and Validation-Set (Blue)')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_82_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Here, we've plotted a graph of Lambda vs Cost for data set A (red) and
+validation set (blue), keepin order 1. We can see that the model that
+fits the validation set best is when lambda = 0.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}64}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{3}
+         \PY{n}{phib} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{Xb}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{phi\PYZus{}bc} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{Xc}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         
+         \PY{n}{penalties}\PY{p}{,} \PY{n}{costs\PYZus{}b}\PY{p}{,} \PY{n}{validation\PYZus{}costs\PYZus{}a} \PY{o}{=} \PY{n}{test\PYZus{}lambda}\PY{p}{(}\PY{n}{sse}\PY{p}{,} \PY{n}{phib}\PY{p}{,} \PY{n}{yb}\PY{p}{,} \PY{n}{phi\PYZus{}bc}\PY{p}{,} \PY{n}{yc}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{penalties}\PY{p}{,} \PY{n}{costs\PYZus{}b}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{penalties}\PY{p}{,} \PY{n}{validation\PYZus{}costs\PYZus{}a}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{c+c1}{\PYZsh{} plt.yscale(\PYZsq{}log\PYZsq{})}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Lambda}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cost}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Lambda vs Cost for Data\PYZhy{}Set\PYZhy{}B (Green) and Validation\PYZhy{}Set (Blue)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}64}]:} Text(0.5,1,'Lambda vs Cost for Data-Set-B (Green) and Validation-Set (Blue)')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_84_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Here, we've plotted a graph of Lambda vs Cost for data set B (green) and
+validation set (blue), keepin order 3. We can see that the model that
+fits the validation set best is when lambda = 0.
+
+    We know use the best selected parameters for data A and see how the plot
+is looks for data A and validation set
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}76}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{1}
+         \PY{n}{phia} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{Xa}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{phic} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{Xc}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{opta} \PY{o}{=} \PY{n}{ridge\PYZus{}normal\PYZus{}eq}\PY{p}{(}\PY{n}{phia}\PY{p}{,} \PY{n}{ya}\PY{p}{,} \PY{n}{penalty}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{optv\PYZus{}a} \PY{o}{=} \PY{n}{ridge\PYZus{}normal\PYZus{}eq}\PY{p}{(}\PY{n}{phic}\PY{p}{,} \PY{n}{yc}\PY{p}{,} \PY{n}{penalty}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{plot\PYZus{}data}\PY{p}{(}\PY{n}{opta}\PY{p}{,} \PY{n}{Xa}\PY{p}{,} \PY{n}{phia}\PY{p}{,} \PY{n}{ya}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Selected model from data A on data A}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}76}]:} Text(0.5,1,'Selected model from data A on data A')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_87_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}77}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{1}
+         \PY{n}{phia} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{Xa}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{phic} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{Xc}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{opta} \PY{o}{=} \PY{n}{ridge\PYZus{}normal\PYZus{}eq}\PY{p}{(}\PY{n}{phia}\PY{p}{,} \PY{n}{ya}\PY{p}{,} \PY{n}{penalty}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{optv\PYZus{}a} \PY{o}{=} \PY{n}{ridge\PYZus{}normal\PYZus{}eq}\PY{p}{(}\PY{n}{phic}\PY{p}{,} \PY{n}{yc}\PY{p}{,} \PY{n}{penalty}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{plot\PYZus{}data}\PY{p}{(}\PY{n}{optv\PYZus{}a}\PY{p}{,} \PY{n}{Xc}\PY{p}{,} \PY{n}{phic}\PY{p}{,} \PY{n}{yc}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Selected model from data A on validation set}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}77}]:} Text(0.5,1,'Selected model from data A on validation set')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_88_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}78}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{3}
+         \PY{n}{phib} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{Xb}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{phi\PYZus{}bc} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{Xc}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{optb} \PY{o}{=} \PY{n}{ridge\PYZus{}normal\PYZus{}eq}\PY{p}{(}\PY{n}{phib}\PY{p}{,} \PY{n}{yb}\PY{p}{,} \PY{n}{penalty}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{optv\PYZus{}b} \PY{o}{=} \PY{n}{ridge\PYZus{}normal\PYZus{}eq}\PY{p}{(}\PY{n}{phi\PYZus{}bc}\PY{p}{,} \PY{n}{yc}\PY{p}{,} \PY{n}{penalty}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{plot\PYZus{}data}\PY{p}{(}\PY{n}{optb}\PY{p}{,} \PY{n}{Xb}\PY{p}{,} \PY{n}{phib}\PY{p}{,} \PY{n}{yb}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Selected model from data B on data B}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}78}]:} Text(0.5,1,'Selected model from data B on data B')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_89_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}79}]:} \PY{n}{order} \PY{o}{=} \PY{l+m+mi}{3}
+         \PY{n}{phib} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{Xb}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{phi\PYZus{}bc} \PY{o}{=} \PY{n}{designMatrix}\PY{p}{(}\PY{n}{Xc}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{optb} \PY{o}{=} \PY{n}{ridge\PYZus{}normal\PYZus{}eq}\PY{p}{(}\PY{n}{phib}\PY{p}{,} \PY{n}{yb}\PY{p}{,} \PY{n}{penalty}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{optv\PYZus{}b} \PY{o}{=} \PY{n}{ridge\PYZus{}normal\PYZus{}eq}\PY{p}{(}\PY{n}{phi\PYZus{}bc}\PY{p}{,} \PY{n}{yc}\PY{p}{,} \PY{n}{penalty}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{plot\PYZus{}data}\PY{p}{(}\PY{n}{optv\PYZus{}b}\PY{p}{,} \PY{n}{Xc}\PY{p}{,} \PY{n}{phic}\PY{p}{,} \PY{n}{yc}\PY{p}{,} \PY{n}{order}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Selected model from data B on validation set}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}79}]:} Text(0.5,1,'Selected model from data B on validation set')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_90_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    ** Looking at the last 4 plots, we can clearly see that our model
+selection worked well and fit really well on the validation set **
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
