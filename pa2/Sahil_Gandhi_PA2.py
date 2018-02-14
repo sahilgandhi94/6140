@@ -117,15 +117,15 @@ def mainLR(name, penalty, poly=False):
 # mainLR('nonlin', 0.8)
 # mainLR('nonlin', 7)
 
-# mainLR('ls', 0, poly=True)
-# mainLR('ls', 0.8, poly=True)
-# mainLR('ls', 7, poly=True)
-# mainLR('nls', 0, poly=True)
-# mainLR('nls', 0.8, poly=True)
-# mainLR('nls', 7, poly=True)
-# mainLR('nonlin', 0, poly=True)
-# mainLR('nonlin', 0.8, poly=True)
-# mainLR('nonlin', 7, poly=True)
+mainLR('ls', 0, poly=True)
+mainLR('ls', 0.8, poly=True)
+mainLR('ls', 7, poly=True)
+mainLR('nls', 0, poly=True)
+mainLR('nls', 0.8, poly=True)
+mainLR('nls', 7, poly=True)
+mainLR('nonlin', 0, poly=True)
+mainLR('nonlin', 0.8, poly=True)
+mainLR('nonlin', 7, poly=True)
 
 
 ''' SVM '''
