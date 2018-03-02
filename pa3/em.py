@@ -1,9 +1,12 @@
+import itertools
 import math
 import pdb
 import random
+import traceback
 from copy import deepcopy
 
 import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
 import numpy as np
 import pylab as pl
 import scipy
@@ -134,8 +137,8 @@ class KMeans:
             pl.show()
 
 class GMM:
-    def __init__(self, datasrc, n_clusters, mu=None, cov=None, w=None, covariance_type='full', convergence_threshold=1e-8):
-        self.x = np.loadtxt('data/'+datasrc+'.txt')
+    def __init__(self, datasrc, n_clusters, x=None, mu=None, cov=None, w=None, covariance_type='full', convergence_threshold=1e-8):
+        self.x = np.loadtxt('data/'+datasrc+'.txt') if x is None else x
         self.n_clusters = n_clusters
         self.n_elements = self.x.shape[0]
         self.n_dim = self.x.shape[1]
@@ -147,19 +150,16 @@ class GMM:
         pmu = []
         pcov = []
         pw = []
-        for i in range(n_clusters):
-            pmu.append(self.x[i,:])
-            pcov.append(np.eye(self.x.shape[1])) # identity
-            # pcov.append(np.ones((self.x.shape[1], self.x.shape[1]))) # all 1's
-            pw.append(1./n_clusters)
+        if mu is None or cov is None or w is None:
+            for i in range(n_clusters):
+                pmu.append(self.x[i,:])
+                pcov.append(np.eye(self.x.shape[1])) # identity
+                # pcov.append(np.ones((self.x.shape[1], self.x.shape[1]))) # all 1's
+                pw.append(1./n_clusters)
 
         self.mu = pmu if mu is None else mu
         self.cov = pcov if cov is None else cov
         self.w = pw if w is None else w
-
-        print(self.mu == mu)
-        print(self.w == w)
-        print(self.cov == cov)
 
     def e(self):
         ''' computes the responsibilities (memberships) '''
@@ -254,13 +254,6 @@ class GMM:
             self.plot(kwargs)
 
     def plot(self, save=False, **kwargs):
-        # print('--'*5,self._plot_title,'--'*10)
-        # print('iter', len(self.log_likelihoods))
-        # print('ll', self.log_likelihoods[-1])
-        # print('mu', self.mu)
-        # print('cov', self.cov)
-        # print('w', self.w)
-        # print('--'*20)
         plotMOG(
             self.x, [MOG(pi=self.w[i], mu=self.mu[i], var=self.cov[i]) for i in range(self.n_clusters)], 
             title=self._plot_title, save=save
@@ -294,45 +287,137 @@ class GMM:
     def q3_1(datasrc_small, datasrc_large, save=False):
         i=0
         # iters = []
-        lls = []
-        lls_large = []
-        for n_clus in range(1, 6):
-            for covariance_type in ['full', 'diag']:
+        for covariance_type in ['full', 'diag']:
+            lls = []
+            lls_large = []
+            for n_clus in range(1, 6):            
                 i+=1
                 print('Model {}; #Clusters: {}; Covariance Type: {}'.format(i, n_clus, covariance_type))
                 g = GMM(datasrc_small, n_clus, covariance_type=covariance_type)
                 g.fit()
                 lls.append(g.log_likelihoods[-1]/g.n_elements)
                 # iters.append(len(g.log_likelihoods))
-
                 gl = GMM(datasrc_large, n_clus, mu=g.mu, cov=g.cov, w=g.w, covariance_type=covariance_type)
-                gl.fit()
-                lls_large.append(gl.log_likelihoods[-1]/gl.n_elements)
-                # gl.predict_probabilities()
-                # lls_large.append(gl.likelihood(predicted=True)/gl.n_elements)
+                # gl.fit()
+                # lls_large.append(gl.log_likelihoods[-1]/gl.n_elements)
+                gl.predict_probabilities()
+                lls_large.append(gl.likelihood(predicted=True)/gl.n_elements)
 
-        title = datasrc_small+' Model vs Avg-LL'
-        pl.plot(list(range(1, 11)), lls, label='Small Data')
-        pl.plot(list(range(1, 11)), lls_large, label='Large Data')
-        # pl.plot(list(range(1, 11)), iters, label='Iterations', color='blue')
-        pl.legend(bbox_to_anchor=(0, 1), loc='upper left', ncol=1)
-        pl.xlabel('Models')
-        pl.ylabel('Average Log-Likelihood')
-        # pl.yscale('log')
-        pl.title(title)
-        if save:
-            pl.savefig(title+'.png', bbox_inches='tight')
-            pl.clf()
-        else:
-            pl.show()
+            title = datasrc_small.replace('_small', '')+' Model vs Avg-LL; Cov Type='+covariance_type
+            pl.plot(list(range(1, 6)), lls, label='Train Data')
+            pl.plot(list(range(1, 6)), lls_large, label='Test Data')
+            # pl.plot(list(range(1, 11)), iters, label='Iterations', color='blue')
+            pl.legend(bbox_to_anchor=(0, 1), loc='upper left', ncol=1)
+            pl.xlabel('Models')
+            pl.ylabel('Average Log-Likelihood')
+            # pl.yscale('log')
+            pl.title(title)
+            if save:
+                pl.savefig(title+'.png', bbox_inches='tight')
+                pl.clf()
+            else:
+                pl.show()
 
-def create_cv_datasets(name, k):
-    data = np.loadtxt('data/'+name+'.txt')
-    np.random.shuffle(data)
-    np.savetxt('data/{}_cv_{}_train.txt'.format(name, k), data[:k,:])
-    np.savetxt('data/{}_cv_{}_test.txt'.format(name, k), data[k:,:])
+    @staticmethod
+    def q3_3(datasrc_small, datasrc_large, cross_validation_val, save=False):
+        i=0
+        for covariance_type in ['full', 'diag']:
+            lls = []
+            lls_large = []
+            for n_clus in range(1, 6):            
+                i+=1
+                print('model', i)
+                scores, wts, mus, covs = cross_validation_score(datasrc_small, cross_validation_val, n_clus, covariance_type)
+                lls.append(np.average(scores))
 
+                _i = np.argmax(np.array(scores)) # choose best model
 
+                g = GMM(datasrc_large, n_clus, cov=covs[_i], w=wts[_i], mu=mus[_i], covariance_type=covariance_type)
+                g.predict_probabilities() # test on large dataset
+                lls_large.append(g.likelihood(predicted=True)/g.n_elements)
+                
+
+            title = datasrc_small.replace('_small', '')+' Model vs Cross Validation Avg-LL; '+str(cross_validation_val)+'-fold; Cov Type='+covariance_type
+            pl.plot(list(range(1, 6)), lls, label='Small Data')
+            pl.plot(list(range(1, 6)), lls_large, label='Large Data')
+            pl.legend(bbox_to_anchor=(0, 1), loc='upper left', ncol=1)
+            pl.xlabel('Models')
+            pl.ylabel('Cross Validation Average Log-Likelihood')
+            pl.title(title)
+            if save:
+                pl.savefig(title+'.png', bbox_inches='tight')
+                pl.clf()
+            else:
+                pl.show()
+
+def bic_plots(name):
+    x = np.loadtxt('data/{}.txt'.format(name))
+    n_clusters = [1, 2, 3, 4, 5]
+    bic = []
+    lowest_bic = np.infty
+    cov_typs = ['full', 'diag']
+    best_cov = None
+    best_wt = None
+    best_mu = None
+    for cv in cov_typs:
+        for k in n_clusters:
+            g = GaussianMixture(k, covariance_type=cv)
+            g.fit(x)
+            bic.append(g.bic(x))
+            if bic[-1] < lowest_bic:
+                lowest_bic = bic[-1]
+                best_cov = g.covariances_
+                best_wt = g.weights_
+                best_mu = g.means_
+
+    bic = np.array(bic)
+
+    bars = []
+    spl = plt.subplot(1, 1, 1)
+    color_iter = itertools.cycle(['cornflowerblue', 'darkorange'])
+    for i, (cv_type, color) in enumerate(zip(cov_typs, color_iter)):
+        xpos = np.array(n_clusters) + .2 * (i - 2)
+        bars.append(pl.bar(xpos, bic[i * len(n_clusters):
+                                    (i + 1) * len(n_clusters)],
+                            width=.2, color=color))
+
+    plt.xticks(n_clusters)
+    plt.ylim([bic.min() * 1.01 - .01 * bic.max(), bic.max()])
+    plt.title('BIC score per model')
+    xpos = np.mod(bic.argmin(), len(n_clusters)) + .65 +\
+        .2 * np.floor(bic.argmin() / len(n_clusters))
+    plt.text(xpos, bic.min() * 0.97 + .03 * bic.max(), '*', fontsize=14)
+    spl.set_xlabel('Number of components')
+    spl.legend([b[0] for b in bars], cov_typs)
+    plt.savefig('{} BIC score per model'.format(name))
+    plt.clf()
+
+def cross_validation_score(name, cross_validation_val, k, cov_typ):
+    data = np.loadtxt('data/{}.txt'.format(name))
+    s=0
+    step = int(data.shape[0]/cross_validation_val)
+    e = step
+    scores = []
+    wts = []
+    mus = []
+    covs = []
+    for i in range(cross_validation_val):
+        test = data[s:e,:]
+        train = np.concatenate((data[0:s,:], data[e:,:]))
+        s = e
+        e += step
+
+        g = GMM(name, k, x=train, covariance_type=cov_typ)
+        g.fit()
+        g_test = GMM(name, k, w=g.w, mu=g.mu, cov=g.cov, x=test, covariance_type=cov_typ)
+        g_test.predict_probabilities()
+        covs.append(g.cov)
+        mus.append(g.mu)
+        wts.append(g.w)
+        scores.append(g_test.likelihood(predicted=True)/g_test.n_elements)
+
+    return scores, wts, mus, covs
+        
 sm_datasrcs = ['data_1_small', 'data_1_large', 'data_2_small', 'data_2_large', 'data_3_small', 'data_3_large']
 mystery_datasrcs = ['mystery_1', 'mystery_2']
 
@@ -413,23 +498,24 @@ if __name__ == '__main__':
     # GMM('data_3_small', 5, covariance_type='full').fit(plot=True, save=True)
     # GMM('data_3_large', 5, covariance_type='full').fit(plot=True, save=True)
 
-    # create_cv_datasets('data_1_small', 30)
-    # create_cv_datasets('data_1_small', 20)
+    print('data 1')
+    GMM.q3_3('data_1_small', 'data_1_large', 39, save=True)
+    print('data 2')
+    GMM.q3_3('data_2_small', 'data_2_large', 39, save=True)
+    print('data 3')
+    GMM.q3_3('data_3_small', 'data_3_large', 39, save=True)
 
-    # create_cv_datasets('data_2_small', 30)
-    # create_cv_datasets('data_2_small', 20)
+    # GMM('data_1_small', 3, covariance_type='diag').fit(plot=True, save=True)
+    # GMM('data_1_large', 3, covariance_type='diag').fit(plot=True, save=True)
 
-    # create_cv_datasets('data_3_small', 30)
-    # create_cv_datasets('data_3_small', 20)
+    # GMM('data_2_small', 2, covariance_type='full').fit(plot=True, save=True)
+    # GMM('data_2_large', 2, covariance_type='full').fit(plot=True, save=True)
 
-    # create_cv_datasets('data_1_large', 300)
-    # create_cv_datasets('data_1_large', 200)
+    # GMM('data_3_small', 2, covariance_type='full').fit(plot=True, save=True)
+    # GMM('data_3_large', 2, covariance_type='full').fit(plot=True, save=True)
 
-    # create_cv_datasets('data_2_large', 300)
-    # create_cv_datasets('data_2_large', 200)
+    # bic_plots('mystery_1')
+    # bic_plots('mystery_2')
 
-    # create_cv_datasets('data_3_large', 300)
-    # create_cv_datasets('data_3_large', 200)
-
-
-
+    # GMM('mystery_1', 1).fit(plot=True, save=True)
+    # GMM('mystery_2', 1).fit(plot=True, save=True)
