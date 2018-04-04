@@ -10,10 +10,10 @@ class GridworldEnv():
     You are an agent on an s x s grid and your goal is to reach the terminal
     state at the top right corner.
     For example, a 4x4 grid looks as follows:
-    o  o  o  T
-    o  o  o  o
-    o  o  o  o
-    x  o  o  o
+    0     1    2    3(T)
+    4     5    6    7
+    8     9    10   11
+    12(x) 13   14   15
     
     x is your position and T is the terminal state.
     You can take actions in each direction (UP=0, RIGHT=1, DOWN=2, LEFT=3).
