@@ -21,7 +21,8 @@ class RL:
         
         self.n_actions = 4  # hard-coded 
         self._grid = self._initialize_grid()
-        self.Q = self._initialize_q_values()
+        self.Q = None
+        self.E = None  # Eligibility choice for lambda algorithms
 
     def run(self):
         """ Runs the experiments based on the set params """
@@ -83,14 +84,19 @@ class RL:
 
     def _q_value_computation_q_learning(self, curr_state, next_state, reward, action):
         """ Compute running average Q(s,a) using Q-learning algorithm"""        
-        return (((1 - self.alpha) * self.Q[curr_state][action]) + 
+        self.Q[curr_state][action] = (((1 - self.alpha) * self.Q[curr_state][action]) + 
                 (self.alpha * (reward + (self.gamma * max(self.Q[next_state].values())))))
 
     def _q_value_computation_sarsa(self, curr_state, next_state, reward, 
                                    curr_action, next_action):
-        """ Compute running average Q(s,a) using Sarsa(lambda) algorithm"""        
-        return (((1 - self.alpha) * self.Q[curr_state][curr_action]) + 
-                (self.alpha * (reward + (self.gamma * self.Q[next_state][next_action]))))
+        """ Compute running average Q(s,a) and E(s,a) using Sarsa(lambda) algorithm"""
+        delta = reward + self.gamma * self.Q[next_state][next_action] - self.Q[curr_state][curr_action]
+        self.E[curr_state][curr_action] += 1
+
+        for s in range(self.grid_size**2):
+            for a in range(self.n_actions):
+                self.Q[s][a] += (self.alpha * delta * self.E[s][a])
+                self.E[s][a] *= (self.gamma * self.sarsa_param)
 
     def _is_exit_from_terminal_state(self, curr_state, next_state, curr_is_done, next_is_done):
         """ Returns if the action is an exit-action from terminal state """
@@ -109,7 +115,7 @@ class RL:
                 chosen_action = self._choose_action_from_policy(curr_state)
                 action = self._evaluate_action_with_env_probabilities(chosen_action)
                 next_state, reward, next_is_done = self._take_action(curr_state, action)
-                self.Q[curr_state][action] = self._q_value_computation_q_learning(curr_state,next_state, reward, action)
+                self._q_value_computation_q_learning(curr_state,next_state, reward, action)
                 # print(step_count, curr_state, action, reward, curr_is_done)
                 if self._is_exit_from_terminal_state(curr_state, next_state, curr_is_done, next_is_done):
                     break
@@ -121,6 +127,7 @@ class RL:
         """ Executes 1 experiment of sarsa(lambda) algorithm """
         self.Q = self._initialize_q_values()
         for i in range(self.n_episodes):
+            self.E = self._initialize_q_values()
             curr_state = self._get_initial_agent_state()
             curr_is_done = False
             chosen_action = self._choose_action_from_policy(curr_state)
@@ -134,7 +141,7 @@ class RL:
                 next_state, reward, next_is_done = self._take_action(curr_state, action)
                 chosen_next_action = self._choose_action_from_policy(next_state)
                 next_action = self._evaluate_action_with_env_probabilities(chosen_next_action)
-                self.Q[curr_state][action] = self._q_value_computation_sarsa(curr_state, next_state, reward, action, next_action)
+                self._q_value_computation_sarsa(curr_state, next_state, reward, action, next_action)
                 # print(step_count, curr_state, action, reward, curr_is_done)
                 if self._is_exit_from_terminal_state(curr_state, next_state, curr_is_done, next_is_done):
                     break
