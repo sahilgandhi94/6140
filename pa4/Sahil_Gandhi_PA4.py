@@ -1,7 +1,9 @@
 import argparse
 from copy import deepcopy
+from time import time
 
 import numpy as np
+from matplotlib import pyplot as plt
 
 import gridworld as gw
 
@@ -11,25 +13,34 @@ class RL:
     def __init__(self, alg, size, gamma, n_experiments,
                 n_episodes, epsilon, alpha, sarsa_param):
         self.alg = alg
-        self.grid_size = size
-        self.gamma = gamma
-        self.n_experiments = n_experiments
-        self.n_episodes = n_episodes
-        self.epsilon = epsilon
-        self.alpha = alpha
-        self.sarsa_param = sarsa_param
+        self.grid_size = int(size)
+        self.gamma = float(gamma)
+        self.n_experiments = int(n_experiments)
+        self.n_episodes = int(n_episodes)
+        self.epsilon = float(epsilon)
+        self.alpha = float(alpha)
+        self.sarsa_param = float(sarsa_param)
         
         self.n_actions = 4  # hard-coded 
         self._grid = self._initialize_grid()
         self.Q = None
         self.E = None  # Eligibility choice for lambda algorithms
 
-    def run(self):
-        """ Runs the experiments based on the set params """
+    def learn(self):
+        """ Learns 1 experiment based on the set params """
         if self.alg == 'q':
             self._q_learning()
         elif self.alg == 's':
             self._sarsa()
+        else:
+            raise ValueError('Unknown value for `alg` found `{}`'.format(self.alg))
+
+    def run(self):
+        """ Runs the experiments based on the set params """
+        if self.alg == 'q':
+            self._n_experiments_q_learning()
+        elif self.alg == 's':
+            self._n_experiments_sarsa()
         else:
             raise ValueError('Unknown value for `alg` found `{}`'.format(self.alg))
 
@@ -100,12 +111,13 @@ class RL:
 
     def _is_exit_from_terminal_state(self, curr_state, next_state, curr_is_done, next_is_done):
         """ Returns if the action is an exit-action from terminal state """
-        return next_is_done and curr_is_done and (next_state == curr_state)
+        return next_is_done and curr_is_done# and (next_state == curr_state)
 
     def _q_learning(self):
         """ Executes 1 experiment of q-learning algorithm """
         step_counts = []
         q_values_per_episode = []
+        log_q = []
         
         self.Q = self._initialize_q_values()
         for i in range(self.n_episodes):
@@ -121,12 +133,16 @@ class RL:
                 self._q_value_computation_q_learning(curr_state,next_state, reward, action)
                 # print(step_count, curr_state, action, reward, curr_is_done)
                 if self._is_exit_from_terminal_state(curr_state, next_state, curr_is_done, next_is_done):
+                # if next_is_done:
+                    log_q.append(deepcopy(self.Q))
+                    # print(step_count, next_state, action, reward, next_is_done)
                     step_counts.append(step_count)
                     q_values_per_episode.append(deepcopy(self.Q))
                     break
                 else:
                     curr_state = next_state
                     curr_is_done = next_is_done
+        # print(log_q)
         return step_counts, q_values_per_episode
 
     def _sarsa(self):
@@ -165,11 +181,81 @@ class RL:
 
     def _n_experiments_q_learning(self):
         """ Runs q-learning n times and returns per-experiment parameters """
-        raise NotImplementedError
+        step_counts_per_episode_per_exp = []
+        q_values_per_episode_per_exp = []
+        t = time()
+        start = t
+        for i in range(self.n_experiments):
+            step_counts, q_values = self._q_learning()
+            step_counts_per_episode_per_exp.append(step_counts)
+            q_values_per_episode_per_exp.append(q_values)
+            t_ = time()
+            print('{} experiment completed in {} secs'.format(i+1, round(t_-t, 3)))
+            t = t_
+        print('Total time taken {} mins'.format(round((time()-start)/60, 3)))
+        
+        self.plot_time_to_goal_vs_episodes(step_counts_per_episode_per_exp)
+        self.plot_maximum_q_value_vs_episodes(q_values_per_episode_per_exp)
 
     def _n_experiments_sarsa(self):
         """ Runs sarsa(lambda) n times and returns per-experiment parameters """
-        raise NotImplementedError
+        step_counts_per_episode_per_exp = []
+        q_values_per_episode_per_exp = []
+        t = time()
+        start = t
+        for i in range(self.n_experiments):
+            step_counts, q_values = self._sarsa()
+            step_counts_per_episode_per_exp.append(step_counts)
+            q_values_per_episode_per_exp.append(q_values)
+            t_ = time()
+            print('{} experiment completed in {} secs'.format(i+1, round(t_-t, 3)))
+            t = t_
+        print('Total time taken {} mins'.format(round((time()-start)/60, 3)))
+        
+        self.plot_time_to_goal_vs_episodes(step_counts_per_episode_per_exp)
+        self.plot_maximum_q_value_vs_episodes(q_values_per_episode_per_exp)
+
+    def plot_time_to_goal_vs_episodes(self, step_counts_per_episode_per_exp):
+        steps = np.array(step_counts_per_episode_per_exp).T  # each ith row is the num of steps in ith episode for all experiments
+        averages = np.average(steps, axis=1)
+        plt.plot(range(self.n_episodes), averages, label='Average time steps required to reach goal')
+        plt.legend()
+        plt.xlabel('Episodes')
+        plt.ylabel('Average time steps')
+        title = r'Alg:{}; Exp:{}; Eps:{}; Size:{}; $ \lambda $:{}; $ \gamma $:{}; $ \epsilon $:{}; $ \alpha $:{}'.format(
+            self.alg, self.n_experiments, self.n_episodes, self.grid_size, self.sarsa_param, self.gamma, self.epsilon, self.alpha
+        )
+        plt.title(title)
+        plt.savefig('Average time steps required to reach goal')
+        plt.clf()
+
+    def plot_maximum_q_value_vs_episodes(self, q_values_per_episode_per_exp):
+        # we are only looking at the start state - so only look at q-values for that state
+        start_state = self._get_initial_agent_state()
+        max_q_values = [[max(qval[start_state].values()) for qval in exp_res] for exp_res in q_values_per_episode_per_exp]
+        q_values = np.array(max_q_values).T  # each ith row is the max q value in the ith episode for all experiments
+        vals = np.average(q_values, axis=1)
+        plt.plot(range(self.n_episodes), vals, label='Max q-value for the start state')
+        plt.legend()
+        plt.xlabel('Episodes')
+        plt.ylabel('Max q-value for start state')
+        title = r'Alg:{}; Exp:{}; Eps:{}; Size:{}; $ \lambda $:{}; $ \gamma $:{}; $ \epsilon $:{}; $ \alpha $:{}'.format(
+            self.alg, self.n_experiments, self.n_episodes, self.grid_size, self.sarsa_param, self.gamma, self.epsilon, self.alpha
+        )
+        plt.title(title)
+        plt.savefig('Max q-value for the start state')
+        plt.clf()
+        
+
+    def print_policy(self):
+        _actions = ['U', 'R', 'D', 'L']
+        for i in range(self.grid_size):
+            line = []
+            for j in range(self.grid_size):
+                state = (i*self.grid_size) + j
+                line.append(_actions[max(self.Q[state], key=self.Q[state].get)])
+            print(line)
+
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description='Reinforcement Learning (PA4) - Sahil Gandhi.')
@@ -225,3 +311,5 @@ if __name__=='__main__':
     obj.run()
     print('-'*15, 'After run')
     print(vars(obj))
+    print('-'*15, 'Optimal policy')
+    obj.print_policy()
