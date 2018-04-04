@@ -104,6 +104,9 @@ class RL:
 
     def _q_learning(self):
         """ Executes 1 experiment of q-learning algorithm """
+        step_counts = []
+        q_values_per_episode = []
+        
         self.Q = self._initialize_q_values()
         for i in range(self.n_episodes):
             curr_state = self._get_initial_agent_state()
@@ -118,13 +121,19 @@ class RL:
                 self._q_value_computation_q_learning(curr_state,next_state, reward, action)
                 # print(step_count, curr_state, action, reward, curr_is_done)
                 if self._is_exit_from_terminal_state(curr_state, next_state, curr_is_done, next_is_done):
+                    step_counts.append(step_count)
+                    q_values_per_episode.append(deepcopy(self.Q))
                     break
                 else:
                     curr_state = next_state
                     curr_is_done = next_is_done
+        return step_counts, q_values_per_episode
 
     def _sarsa(self):
         """ Executes 1 experiment of sarsa(lambda) algorithm """
+        step_counts = []
+        q_values_per_episode = []
+
         self.Q = self._initialize_q_values()
         for i in range(self.n_episodes):
             self.E = self._initialize_q_values()
@@ -144,12 +153,15 @@ class RL:
                 self._q_value_computation_sarsa(curr_state, next_state, reward, action, next_action)
                 # print(step_count, curr_state, action, reward, curr_is_done)
                 if self._is_exit_from_terminal_state(curr_state, next_state, curr_is_done, next_is_done):
+                    step_counts.append(step_count)
+                    q_values_per_episode.append(deepcopy(self.Q))
                     break
                 else:
                     curr_state = next_state
                     curr_is_done = next_is_done
                     # need to still re-evaluate the success of the chosen action due to env probabilities
                     action = self._evaluate_action_with_env_probabilities(next_action)
+        return step_counts, q_values_per_episode
 
     def _n_experiments_q_learning(self):
         """ Runs q-learning n times and returns per-experiment parameters """
