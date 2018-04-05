@@ -39,7 +39,7 @@ class GridworldEnv():
             self.P[s] = {a : [] for a in range(nA)}
 
             is_done = lambda s: s == shape[1] - 1
-            reward = 5.0 if is_done(s) else -0.1
+            reward = 4.9 if is_done(s) else -0.1
 
             # We're stuck in a terminal state
             if is_done(s):
