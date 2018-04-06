@@ -229,21 +229,21 @@ class RL:
     @staticmethod
     def new_obj(cmd_args):
         return RL(
-            alg = cmd_args.alg,
-            size = cmd_args.size,
-            gamma = cmd_args.gamma,
-            n_experiments = cmd_args.exps,
-            n_episodes = cmd_args.eps,
-            epsilon = cmd_args.epsilon,
-            alpha = cmd_args.alpha,
-            sarsa_param = vars(cmd_args)['lambda']
+            alg = cmd_args['alg'],
+            size = cmd_args['size'],
+            gamma = cmd_args['gamma'],
+            n_experiments = cmd_args['exps'],
+            n_episodes = cmd_args['eps'],
+            epsilon = cmd_args['epsilon'],
+            alpha = cmd_args['alpha'],
+            sarsa_param = cmd_args['lambda']
         )
 
     @staticmethod
     def run_experiments(*args):
         cmd_args, exp_num = args[0]
         obj = RL.new_obj(cmd_args)
-        if cmd_args.alg == 'q':
+        if cmd_args['alg'] == 'q':
             return obj._q_learning(exp_num)
         else:
             return obj._sarsa(exp_num)
@@ -254,10 +254,16 @@ def eval_n_experiments(cmd_args, variable, var_values):
     pool = Pool()
     step_count_per_value = []
     q_value_per_value = []
+    
+    cmd_args = vars(cmd_args)
+    
     for val in var_values:
         step_counts_per_episode_per_exp = []
         q_values_per_episode_per_exp = []
-        values = pool.map(RL.run_experiments, [(cmd_args, i+1) for i in range(int(cmd_args.exps))])
+        
+        cmd_args[variable] = val
+
+        values = pool.map(RL.run_experiments, [(cmd_args, i+1) for i in range(int(cmd_args['exps']))])
         for val in values:
             step_counts_per_episode_per_exp.append(val[0])
             q_values_per_episode_per_exp.append(val[1])
