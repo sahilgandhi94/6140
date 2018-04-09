@@ -494,5 +494,5 @@ if __name__=='__main__':
     # if cmd_args.alg == 's':
         # eval_n_experiments(cmd_args, 'lambda', [0, .25, .5, .75, 1])
 
-    eval_n_experiments_v2(cmd_args)
-    # eval_n_experiments_v3(cmd_args)
+    # eval_n_experiments_v2(cmd_args)
+    eval_n_experiments_v3(cmd_args)
