@@ -4,6 +4,8 @@ from multiprocessing import Pool
 from time import time
 
 import numpy as np
+import matplotlib
+matplotlib.use('agg')
 from matplotlib import pyplot as plt
 
 import gridworld as gw
@@ -29,12 +31,18 @@ class RL:
 
     def learn(self):
         """ Learns 1 experiment based on the set params """
+        print('-'*15, 'Before learnig')
         if self.alg == 'q':
             self._q_learning()
         elif self.alg == 's':
             self._sarsa()
         else:
             raise ValueError('Unknown value for `alg` found `{}`'.format(self.alg))
+        print('-'*15, 'After learnig')
+        print(vars(self))
+        print('-'*15, 'Learned optimal Policy')
+        self.print_policy()
+        print('-'*15)
 
     def _initialize_grid(self):
         """ Initializes the grid based on the `grid_size` """
@@ -184,7 +192,10 @@ class RL:
             self.alg, self.n_experiments, self.n_episodes, self.grid_size, self.sarsa_param, self.gamma, self.epsilon, self.alpha
         )
         plt.title(title)
-        plt.savefig('Average time steps required to reach goal')
+        if self.alg == 's':
+            plt.savefig('images/sss-'+'Average time steps required to reach goal')
+        else:
+            plt.savefig('images/qqq-'+'Average time steps required to reach goal')
         plt.clf()
 
     def plot_maximum_q_value_vs_episodes(self, q_values_per_episode_per_exp):
@@ -198,7 +209,10 @@ class RL:
             self.alg, self.n_experiments, self.n_episodes, self.grid_size, self.sarsa_param, self.gamma, self.epsilon, self.alpha
         )
         plt.title(title)
-        plt.savefig('Max q-value for the start state')
+        if self.alg == 's':
+            plt.savefig('images/sss-'+'Max q-value for the start state')
+        else:
+            plt.savefig('images/qqq-'+'Max q-value for the start state')
         plt.clf()
 
     def plot(self, values, variable, var_values, y_label, title):
@@ -275,6 +289,91 @@ def eval_n_experiments(cmd_args, variable, var_values):
     obj.plot(step_count_per_value, variable, var_values, y_label='Average time steps', title='Average time steps')
     obj.plot(q_value_per_value, variable, var_values, y_label='Max q-value for start state', title='Max q-value for start state')
 
+def eval_n_experiments_v2(cmd_args):
+    """ Runs algorithm n times and plots per-experiment parameters """
+    t = time()
+    pool = Pool()
+    step_count_per_value = []
+    q_value_per_value = []
+    
+    cmd_args = vars(cmd_args)
+    
+    # for val in var_values:
+    step_counts_per_episode_per_exp = []
+    q_values_per_episode_per_exp = []
+
+    values = pool.map(RL.run_experiments, [(cmd_args, i+1) for i in range(int(cmd_args['exps']))])
+    for val in values:
+        step_counts_per_episode_per_exp.append(val[0])
+        q_values_per_episode_per_exp.append(val[1])
+    # step_count_per_value.append(step_counts_per_episode_per_exp)
+    # q_value_per_value.append(q_values_per_episode_per_exp)
+    print('Total time taken to run n-experiments is {} mins'.format(round((time()-t)/60, 3)))
+
+    obj = RL.new_obj(cmd_args)
+    obj.plot_time_to_goal_vs_episodes(step_counts_per_episode_per_exp)
+    obj.plot_maximum_q_value_vs_episodes(q_values_per_episode_per_exp)
+
+def eval_n_experiments_v3(cmd_args):
+    """ Runs algorithm n times and plots per-experiment parameters """
+    t = time()
+    pool = Pool()
+    step_count_per_value = []
+    q_value_per_value = []
+    
+    cmd_args = vars(cmd_args)
+    
+    # for val in var_values:
+    q_step_counts_per_episode_per_exp = []
+    q_q_values_per_episode_per_exp = []
+
+    s_step_counts_per_episode_per_exp = []
+    s_q_values_per_episode_per_exp = []
+
+    for a in ['s', 'q']:
+        cmd_args['alg'] = a
+        if a == 's':
+            cmd_args['epsilon'] = .1
+            cmd_args['lambda'] = .75
+            cmd_args['alpha'] = .5
+            values = pool.map(RL.run_experiments, [(cmd_args, i+1) for i in range(int(cmd_args['exps']))])
+        else: 
+            cmd_args['epsilon'] = .5
+            cmd_args['alpha'] = .1
+            values = pool.map(RL.run_experiments, [(cmd_args, i+1) for i in range(int(cmd_args['exps']))])
+        for val in values:
+            if a == 'q':
+                q_step_counts_per_episode_per_exp.append(val[0])
+                q_q_values_per_episode_per_exp.append(val[1])
+            else:
+                s_step_counts_per_episode_per_exp.append(val[0])
+                s_q_values_per_episode_per_exp.append(val[1])
+
+        print(f'Total time taken to run n-experiments for {a} is {round((time()-t)/60, 3)} mins')
+
+    s_step_counts_per_episode_per_exp = np.average(np.array(s_step_counts_per_episode_per_exp).T, axis=1)
+    s_q_values_per_episode_per_exp = np.average(np.array(s_q_values_per_episode_per_exp).T, axis=1)
+    q_step_counts_per_episode_per_exp = np.average(np.array(q_step_counts_per_episode_per_exp).T, axis=1)
+    q_q_values_per_episode_per_exp = np.average(np.array(q_q_values_per_episode_per_exp).T, axis=1)
+
+    plt.plot(range(cmd_args['eps']), s_step_counts_per_episode_per_exp, label='Sarsa($\lambda$) average step count')
+    plt.plot(range(cmd_args['eps']), q_step_counts_per_episode_per_exp, label='Q-learning average step count')
+    plt.legend()
+    plt.ylabel('Episodes')
+    plt.xlabel('Step Count')
+    plt.title('Step count - Q-learning vs Sarsa($\lambda$)')
+    plt.savefig('images/Step count - Q-learning vs Sarsa')
+    plt.clf()
+
+    plt.plot(range(cmd_args['eps']), s_q_values_per_episode_per_exp, label='Sarsa($\lambda$) start state Q-value')
+    plt.plot(range(cmd_args['eps']), q_q_values_per_episode_per_exp, label='Q-learning start state Q-value')
+    plt.legend()
+    plt.ylabel('Episodes')
+    plt.xlabel('Q-value')
+    plt.title('Start state Q-value - Q-learning vs Sarsa($\lambda$)')
+    plt.savefig('images/Start state Q-value - Q-learning vs Sarsa')
+    plt.clf()
+
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description='Reinforcement Learning (PA4) - Sahil Gandhi.')
     parser.add_argument(
@@ -313,12 +412,11 @@ if __name__=='__main__':
     assert cmd_args.alg in ['q', 's'], 'argument `alg` cannot take value `{}`'.format(
         cmd_args.alg
     )
-
-    alphas = [0, 0.01, .05, .1, .5, 1]
-    epsilons = [0, .1, .25, .5, 1]
-    lambdas = [0, .25, .5, .75, 1]
     
-    eval_n_experiments(cmd_args, 'alpha', alphas)
-    eval_n_experiments(cmd_args, 'epsilon', epsilons)
-    if cmd_args.alg == 's':
-        eval_n_experiments(cmd_args, 'lambda', lambdas)
+    # eval_n_experiments(cmd_args, 'alpha', [0, 0.01, .05, .1, .5, 1])
+    # eval_n_experiments(cmd_args, 'epsilon', [.25])
+    # if cmd_args.alg == 's':
+        # eval_n_experiments(cmd_args, 'lambda', [0, .25, .5, .75, 1])
+
+    eval_n_experiments_v2(cmd_args)
+    # eval_n_experiments_v3(cmd_args)
